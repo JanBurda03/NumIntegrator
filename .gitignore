@@ -1,0 +1,8 @@
+# IntelliJ IDEA
+.idea/
+
+# Maven
+.mvn/
+
+# Maven build output
+/target/
