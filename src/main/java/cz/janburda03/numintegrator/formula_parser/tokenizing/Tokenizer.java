@@ -99,7 +99,7 @@ public class Tokenizer {
             case "abs" -> new OperationToken(Operation.ABS);
             case "sqrt"-> new OperationToken(Operation.SQRT);
             case "pow" -> new OperationToken(Operation.POWER);
-            default -> throw new IllegalArgumentException("Unknow function: " + ident);
+            default -> null; // it is a variable
         };
     }
 
