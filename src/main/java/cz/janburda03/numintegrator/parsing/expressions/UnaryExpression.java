@@ -52,6 +52,7 @@ public class UnaryExpression extends Expression
             case COT -> 1.0 / Math.tan(value);
 
             case LN -> Math.log(value);
+            case LOG -> Math.log10(value);
 
             case ABS -> Math.abs(value);
             case SQRT -> Math.sqrt(value);

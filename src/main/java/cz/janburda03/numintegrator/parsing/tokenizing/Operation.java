@@ -14,7 +14,7 @@ public enum Operation {
 
     NEGATE(1, 4),     // -x
 
-    LOG(2, 5),        // log_a(b)
+    LOG(1, 5),        // log_10(a)
     LN(1, 5),         // ln(x)
 
     SIN(1, 5),

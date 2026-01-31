@@ -53,7 +53,6 @@ public class BinaryExpression extends Expression
             case MULTIPLY -> l * r;
             case DIVIDE -> l / r;
             case POWER -> Math.pow(l, r);
-            case LOG -> Math.log(r) / Math.log(l); // log_a(b)
             default -> throw new IllegalStateException(
                     "Operation " + operation + " is not implemented"
             );

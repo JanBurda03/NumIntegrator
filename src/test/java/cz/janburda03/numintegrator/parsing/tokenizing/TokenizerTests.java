@@ -1,63 +1,64 @@
 package cz.janburda03.numintegrator.parsing.tokenizing;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TokenizerTests {
+    private static final double EPSILON = 1e-10;
 
     @Test
     void testSingleNumber() throws Exception {
         Tokenizer tokenizer = new Tokenizer("42");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(1, tokens.size());
-        assertTrue(tokens.get(0) instanceof NumberToken);
-        assertEquals(42.0, ((NumberToken) tokens.getLast()).getValue(), 0.01);
+        Assertions.assertEquals(1, tokens.size());
+        assertInstanceOf(NumberToken.class, tokens.getFirst());
+        Assertions.assertEquals(42.0, ((NumberToken) tokens.getLast()).getValue(), EPSILON);
     }
 
     @Test
     void testSingleVariable() throws Exception {
         Tokenizer tokenizer = new Tokenizer("x");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(1, tokens.size());
-        assertTrue(tokens.get(0) instanceof VariableToken);
-        assertEquals("x", ((VariableToken) tokens.get(0)).getVariable());
+        Assertions.assertEquals(1, tokens.size());
+        assertInstanceOf(VariableToken.class, tokens.getFirst());
+        Assertions.assertEquals("x", ((VariableToken) tokens.getFirst()).getVariable());
     }
 
     @Test
     void testAddition() throws Exception {
         Tokenizer tokenizer = new Tokenizer("3+2");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(3, tokens.size());
-        assertTrue(tokens.get(1) instanceof OperationToken);
-        assertTrue(tokens.get(0) instanceof NumberToken);
-        assertTrue(tokens.get(2) instanceof NumberToken);
+        Assertions.assertEquals(3, tokens.size());
+        assertInstanceOf(OperationToken.class, tokens.get(1));
+        assertInstanceOf(NumberToken.class, tokens.get(0));
+        assertInstanceOf(NumberToken.class, tokens.get(2));
 
-        assertEquals(Operation.ADD, ((OperationToken) tokens.get(1)).getOperation());
+        Assertions.assertEquals(Operation.ADD, ((OperationToken) tokens.get(1)).getOperation());
     }
 
     @Test
     void testUnaryMinus() throws Exception {
         Tokenizer tokenizer = new Tokenizer("-5");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(2, tokens.size());
-        assertTrue(tokens.get(0) instanceof OperationToken);
-        assertTrue(tokens.get(1) instanceof NumberToken);
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
+        Assertions.assertEquals(2, tokens.size());
+        assertInstanceOf(OperationToken.class, tokens.get(0));
+        assertInstanceOf(NumberToken.class, tokens.get(1));
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
     }
 
     @Test
     void testBinaryMinus() throws Exception {
         Tokenizer tokenizer = new Tokenizer("5-3");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(3, tokens.size());
-        assertTrue(tokens.get(1) instanceof OperationToken);
-        assertTrue(tokens.get(0) instanceof NumberToken);
-        assertTrue(tokens.get(2) instanceof NumberToken);
+        Assertions.assertEquals(3, tokens.size());
+        assertInstanceOf(OperationToken.class, tokens.get(1));
+        assertInstanceOf(NumberToken.class, tokens.get(0));
+        assertInstanceOf(NumberToken.class, tokens.get(2));
 
-        assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(1)).getOperation());
+        Assertions.assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(1)).getOperation());
     }
 
     @Test
@@ -66,86 +67,103 @@ class TokenizerTests {
 
         List<Token> tokens = tokenizer.tokenize();
 
-        assertEquals(4, tokens.size());
+        Assertions.assertEquals(4, tokens.size());
 
-        assertTrue(tokens.get(0) instanceof OperationToken);
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
+        assertInstanceOf(OperationToken.class, tokens.get(0));
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
 
-        assertTrue(tokens.get(1) instanceof NumberToken);
-        assertEquals(Math.PI, ((NumberToken) tokens.get(1)).getValue(), 1e-9);
+        assertInstanceOf(NumberToken.class, tokens.get(1));
+        Assertions.assertEquals(Math.PI, ((NumberToken) tokens.get(1)).getValue(), EPSILON);
 
-        assertTrue(tokens.get(2) instanceof OperationToken);
-        assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(2)).getOperation());
+        assertInstanceOf(OperationToken.class, tokens.get(2));
+        Assertions.assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(2)).getOperation());
 
-        assertTrue(tokens.get(3) instanceof NumberToken);
-        assertEquals(Math.E, ((NumberToken) tokens.get(3)).getValue(), 1e-9);
+        assertInstanceOf(NumberToken.class, tokens.get(3));
+        Assertions.assertEquals(Math.E, ((NumberToken) tokens.get(3)).getValue(), EPSILON);
     }
 
     @Test
     void testUnaryMinusAndAddition() throws Exception {
         Tokenizer tokenizer = new Tokenizer("-3+2");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(4, tokens.size());
+        Assertions.assertEquals(4, tokens.size());
 
-        assertTrue(tokens.get(0) instanceof OperationToken);
-        assertTrue(tokens.get(2) instanceof OperationToken);
-        assertTrue(tokens.get(1) instanceof NumberToken);
-        assertTrue(tokens.get(3) instanceof NumberToken);
+        assertInstanceOf(OperationToken.class, tokens.get(0));
+        assertInstanceOf(OperationToken.class, tokens.get(2));
+        assertInstanceOf(NumberToken.class, tokens.get(1));
+        assertInstanceOf(NumberToken.class, tokens.get(3));
 
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
-        assertEquals(Operation.ADD, ((OperationToken) tokens.get(2)).getOperation());
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
+        Assertions.assertEquals(Operation.ADD, ((OperationToken) tokens.get(2)).getOperation());
     }
 
     @Test
     void testParenthesesAndNegate() throws Exception {
         Tokenizer tokenizer = new Tokenizer("-1*-(x+2)");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(9, tokens.size());
+        Assertions.assertEquals(9, tokens.size());
 
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(3)).getOperation());
-        assertEquals(Operation.MULTIPLY, ((OperationToken) tokens.get(2)).getOperation());
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(3)).getOperation());
+        Assertions.assertEquals(Operation.MULTIPLY, ((OperationToken) tokens.get(2)).getOperation());
 
-        assertTrue(tokens.get(4) instanceof LeftParenthesisToken);
-        assertTrue(tokens.get(8) instanceof RightParenthesisToken);
+        assertInstanceOf(LeftParenthesisToken.class, tokens.get(4));
+        assertInstanceOf(RightParenthesisToken.class, tokens.get(8));
     }
 
     @Test
     void testFunctionSin() throws Exception {
         Tokenizer tokenizer = new Tokenizer("sin(x)");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(4, tokens.size());
-        assertTrue(tokens.get(0) instanceof OperationToken);
-        assertEquals(Operation.SIN, ((OperationToken) tokens.get(0)).getOperation());
+        Assertions.assertEquals(4, tokens.size());
+        assertInstanceOf(OperationToken.class, tokens.getFirst());
+        Assertions.assertEquals(Operation.SIN, ((OperationToken) tokens.getFirst()).getOperation());
     }
 
     @Test
     void testFunctionNaturalLog() throws Exception {
         Tokenizer tokenizer = new Tokenizer("ln(10)");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(4, tokens.size());
-        assertTrue(tokens.get(0) instanceof OperationToken);
-        assertEquals(Operation.LN, ((OperationToken) tokens.get(0)).getOperation());
-        assertTrue(tokens.get(1) instanceof LeftParenthesisToken);
-        assertTrue(tokens.get(3) instanceof RightParenthesisToken);
+        Assertions.assertEquals(4, tokens.size());
+        assertInstanceOf(OperationToken.class, tokens.get(0));
+        Assertions.assertEquals(Operation.LN, ((OperationToken) tokens.get(0)).getOperation());
+        assertInstanceOf(LeftParenthesisToken.class, tokens.get(1));
+        assertInstanceOf(RightParenthesisToken.class, tokens.get(3));
     }
 
     @Test
     void testFunctionLog10() throws Exception {
-        Tokenizer tokenizer = new Tokenizer("log10(-42)");
+        Tokenizer tokenizer = new Tokenizer("log(-42)");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(6, tokens.size());
+        Assertions.assertEquals(5, tokens.size());
 
-        assertTrue(tokens.get(0) instanceof OperationToken);
-        assertEquals(Operation.LOG, ((OperationToken) tokens.get(0)).getOperation());
+        assertInstanceOf(OperationToken.class, tokens.get(0));
+        Assertions.assertEquals(Operation.LOG, ((OperationToken) tokens.get(0)).getOperation());
 
-        assertTrue(tokens.get(1) instanceof NumberToken);
-        assertEquals(10.0, ((NumberToken) tokens.get(1)).getValue(), 0.01);
+        assertInstanceOf(NumberToken.class, tokens.get(3));
+        Assertions.assertEquals(42.0, ((NumberToken) tokens.get(3)).getValue(), EPSILON);
 
-        assertTrue(tokens.get(2) instanceof LeftParenthesisToken);
-        assertTrue(tokens.get(5) instanceof RightParenthesisToken);
+        assertInstanceOf(LeftParenthesisToken.class, tokens.get(1));
+        assertInstanceOf(RightParenthesisToken.class, tokens.get(4));
 
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(3)).getOperation());
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(2)).getOperation());
+
+
+    }
+
+    @Test
+    void testFunctionLog10NoParentheses() throws Exception {
+        Tokenizer tokenizer = new Tokenizer("log-42");
+        List<Token> tokens = tokenizer.tokenize();
+        Assertions.assertEquals(3, tokens.size());
+
+        assertInstanceOf(OperationToken.class, tokens.get(0));
+        Assertions.assertEquals(Operation.LOG, ((OperationToken) tokens.get(0)).getOperation());
+
+        assertInstanceOf(NumberToken.class, tokens.get(2));
+        Assertions.assertEquals(42.0, ((NumberToken) tokens.get(2)).getValue(), EPSILON);
+
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(1)).getOperation());
 
 
     }
@@ -154,21 +172,21 @@ class TokenizerTests {
     void testPowerOperation() throws Exception {
         Tokenizer tokenizer = new Tokenizer("2^-3");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(4, tokens.size());
-        assertEquals(Operation.POWER, ((OperationToken) tokens.get(1)).getOperation());
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(2)).getOperation());
+        Assertions.assertEquals(4, tokens.size());
+        Assertions.assertEquals(Operation.POWER, ((OperationToken) tokens.get(1)).getOperation());
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(2)).getOperation());
     }
 
     @Test
     void testComplexExpression() throws Exception {
         Tokenizer tokenizer = new Tokenizer("-3 - 2*sin(x)");
         List<Token> tokens = tokenizer.tokenize();
-        assertEquals(9, tokens.size());
+        Assertions.assertEquals(9, tokens.size());
 
-        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
-        assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(2)).getOperation());
+        Assertions.assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
+        Assertions.assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(2)).getOperation());
 
-        assertEquals(Operation.MULTIPLY, ((OperationToken) tokens.get(4)).getOperation());
-        assertEquals(Operation.SIN, ((OperationToken) tokens.get(5)).getOperation());
+        Assertions.assertEquals(Operation.MULTIPLY, ((OperationToken) tokens.get(4)).getOperation());
+        Assertions.assertEquals(Operation.SIN, ((OperationToken) tokens.get(5)).getOperation());
     }
 }
