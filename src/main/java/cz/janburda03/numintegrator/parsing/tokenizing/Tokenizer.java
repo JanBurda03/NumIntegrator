@@ -1,4 +1,4 @@
-package cz.janburda03.numintegrator.formula_parser.tokenizing;
+package cz.janburda03.numintegrator.parsing.tokenizing;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,22 +7,45 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tokenizer for mathematical expressions.
+ * Converts a string or character stream into a list of tokens
+ * such as numbers, variables, constants, functions, operations, and parentheses.
+ */
 public class Tokenizer {
 
     private final Reader reader;
     private int currentChar;
 
+    /**
+     * Creates a new Tokenizer from a character stream.
+     *
+     * @param reader the input source to tokenize
+     * @throws IOException if reading from the input fails
+     */
     public Tokenizer(Reader reader) throws IOException
     {
         this.reader = new BufferedReader(reader);
         this.currentChar = this.reader.read();
     }
 
+    /**
+     * Creates a new Tokenizer from a string.
+     *
+     * @param input the string to tokenize
+     * @throws IOException if reading fails (rare for StringReader)
+     */
     public Tokenizer(String input) throws IOException
     {
         this(new StringReader(input));
     }
 
+    /**
+     * Tokenizes the input into a list of tokens.
+     *
+     * @return list of tokens representing numbers, variables, functions, operations, and parentheses
+     * @throws IOException if reading from the input fails
+     */
     public List<Token> tokenize() throws IOException {
         List<Token> tokens = new ArrayList<>();
 
@@ -42,6 +65,7 @@ public class Tokenizer {
             {
                 Token token = readSymbol();
 
+                // Convert '-' to unary minus if appropriate
                 if (token instanceof OperationToken && ((OperationToken)token).getOperation()==Operation.SUBTRACT) {
                     if (tokens.isEmpty() || tokens.getLast() instanceof OperationToken || tokens.getLast() instanceof LeftParenthesisToken) {
                        token =  new OperationToken(Operation.NEGATE);
@@ -74,6 +98,11 @@ public class Tokenizer {
 
         String letters = sb.toString();
 
+        Token constantToken = analyzeConstant(letters);
+        if (constantToken != null) {
+            return constantToken;
+        }
+
         Token functionToken = analyzeFunction(letters);
         if (functionToken != null) {
             return functionToken;
@@ -87,19 +116,27 @@ public class Tokenizer {
         return new VariableToken(sb.toString());
     }
 
-    private OperationToken analyzeFunction(String ident) {
-        return switch (ident) {
+    private Token analyzeConstant(String constant) {
+        return switch (constant) {
+            case "pi" -> new NumberToken(Math.PI);
+            case "e"  -> new NumberToken(Math.E);
+            default   -> null; // it is not a constant
+        };
+    }
+
+    private OperationToken analyzeFunction(String fun) {
+        return switch (fun) {
             case "sin" -> new OperationToken(Operation.SIN);
             case "cos" -> new OperationToken(Operation.COS);
             case "tan" -> new OperationToken(Operation.TAN);
-            case "cot" -> new OperationToken(Operation.COTAN);
+            case "cot" -> new OperationToken(Operation.COT);
             case "ln"  -> new OperationToken(Operation.LN);
             case "log" -> new OperationToken(Operation.LOG);
             case "exp" -> new OperationToken(Operation.EXP);
             case "abs" -> new OperationToken(Operation.ABS);
             case "sqrt"-> new OperationToken(Operation.SQRT);
             case "pow" -> new OperationToken(Operation.POWER);
-            default -> null; // it is a variable
+            default -> null; // it is not a function
         };
     }
 
@@ -130,7 +167,4 @@ public class Tokenizer {
 
         return new NumberToken(Double.parseDouble(sb.toString()));
     }
-
-
-
 }

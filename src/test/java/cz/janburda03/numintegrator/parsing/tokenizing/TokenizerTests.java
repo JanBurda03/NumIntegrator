@@ -1,4 +1,4 @@
-package cz.janburda03.numintegrator.formula_parser.tokenizing;
+package cz.janburda03.numintegrator.parsing.tokenizing;
 
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -58,6 +58,27 @@ class TokenizerTests {
         assertTrue(tokens.get(2) instanceof NumberToken);
 
         assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(1)).getOperation());
+    }
+
+    @Test
+    void testUnaryMinusWithConstants() throws Exception {
+        Tokenizer tokenizer = new Tokenizer("-pi -e");
+
+        List<Token> tokens = tokenizer.tokenize();
+
+        assertEquals(4, tokens.size());
+
+        assertTrue(tokens.get(0) instanceof OperationToken);
+        assertEquals(Operation.NEGATE, ((OperationToken) tokens.get(0)).getOperation());
+
+        assertTrue(tokens.get(1) instanceof NumberToken);
+        assertEquals(Math.PI, ((NumberToken) tokens.get(1)).getValue(), 1e-9);
+
+        assertTrue(tokens.get(2) instanceof OperationToken);
+        assertEquals(Operation.SUBTRACT, ((OperationToken) tokens.get(2)).getOperation());
+
+        assertTrue(tokens.get(3) instanceof NumberToken);
+        assertEquals(Math.E, ((NumberToken) tokens.get(3)).getValue(), 1e-9);
     }
 
     @Test
