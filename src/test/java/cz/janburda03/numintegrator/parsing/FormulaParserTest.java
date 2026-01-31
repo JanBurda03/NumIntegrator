@@ -69,4 +69,6 @@ public class FormulaParserTest {
         Expression expr = FormulaParser.parse("-2^3"); // unary minus applies first?
         Assertions.assertEquals(-8.0, expr.evaluate(Map.of()), EPSILON);
     }
+
+
 }

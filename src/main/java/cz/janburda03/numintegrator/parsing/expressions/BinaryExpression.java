@@ -36,10 +36,13 @@ public class BinaryExpression extends Expression
     }
 
     /**
-     * Evaluates the binary expression given a map of variable values.
+     * Evaluates the binary expression using the provided variable values.
      *
      * @param variables a map containing variable names and their values
-     * @return the result of applying the operation to the evaluated operands
+     * @return the result of applying the binary operation to the evaluated operands
+     *
+     * @throws IllegalArgumentException if the operands are outside the valid
+     *         mathematical domain of the operation (e.g. division by zero)
      * @throws IllegalStateException if the operation is not implemented
      */
     @Override
@@ -51,7 +54,10 @@ public class BinaryExpression extends Expression
             case ADD -> l + r;
             case SUBTRACT -> l - r;
             case MULTIPLY -> l * r;
-            case DIVIDE -> l / r;
+            case DIVIDE -> {
+                if (r == 0.0) throw new IllegalArgumentException("Division by zero");
+                yield l / r;
+            }
             case POWER -> Math.pow(l, r);
             default -> throw new IllegalStateException(
                     "Operation " + operation + " is not implemented"
