@@ -1,25 +1,28 @@
 /**
- * Provides functionality for parsing mathematical expressions into an expression tree.
+ * Provides parsing functionality for mathematical formulas and numerical integration input.
  *
  * <p>
- * This package contains the main components for parsing:
+ * This package groups all components responsible for transforming user input
+ * into structured representations used by the numerical integration core.
+ * </p>
+ *
+ * <p>
+ * It consists of the following subpackages:
  * </p>
  *
  * <ul>
- *     <li><b>{@link cz.janburda03.numintegrator.parsing.exceptions}</b> – contains custom exceptions used during tokenization and parsing.</li>
+ *   <li>{@link cz.janburda03.numintegrator.parsing.formula}
+ *       – parsing of mathematical expressions</li>
  *
- *     <li><b>{@link cz.janburda03.numintegrator.parsing.tokenizing}</b> – converts input strings into tokens and defines supported operations.</li>
- *
- *     <li><b>{@link cz.janburda03.numintegrator.parsing.expressions}</b> – represents nodes of the expression tree and parses tokens into a tree.</li>
- *
- *     <li><b>{@link cz.janburda03.numintegrator.parsing.FormulaParser}</b> – top-level utility class providing a static method
- *         {@link cz.janburda03.numintegrator.parsing.FormulaParser#parse(String)}
- *         to convert a string directly into an {@link cz.janburda03.numintegrator.parsing.expressions.Expression}.</li>
+ *   <li>{@link cz.janburda03.numintegrator.parsing.input}
+ *       – parsing and representation of integration parameters
+ *       (sampling type, variable ranges, sample count)</li>
  * </ul>
  *
  * <p>
- * Together, these components allow parsing and evaluating mathematical expressions
- * including numbers, variables, unary and binary operations, and parentheses.
+ * The parsing layer is independent of the numerical integration algorithms
+ * and serves as a clean interface between textual user input and internal
+ * data structures.
  * </p>
  */
 package cz.janburda03.numintegrator.parsing;
