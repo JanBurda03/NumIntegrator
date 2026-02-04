@@ -1,6 +1,6 @@
 package cz.janburda03.numintegrator.parsing.formula;
 
-import cz.janburda03.numintegrator.parsing.formula.exceptions.UnknownVariableException;
+import cz.janburda03.numintegrator.parsing.formula.exceptions.*;
 import cz.janburda03.numintegrator.parsing.formula.expressions.Expression;
 import org.junit.jupiter.api.Test;
 
@@ -77,6 +77,88 @@ class FormulaParserErrorTests {
 
         assertThrows(IllegalArgumentException.class, () ->
                 expr.evaluate(Map.of())
+        );
+    }
+
+
+    @Test
+    void missingRightParenthesisThrowsException() {
+        assertThrows(
+                MissingRightParenthesisException.class,
+                () -> FormulaParser.parse("(x")
+        );
+    }
+
+    @Test
+    void extraRightParenthesisThrowsException() {
+        assertThrows(
+                UnexpectedTokenException.class,
+                () -> FormulaParser.parse("x)")
+        );
+    }
+
+    @Test
+    void nestedMissingParenthesisThrowsException() {
+        assertThrows(
+                MissingRightParenthesisException.class,
+                () -> FormulaParser.parse("(x+(y*2)")
+        );
+    }
+
+    @Test
+    void emptyParenthesesThrowsException() {
+        assertThrows(
+                UnexpectedTokenException.class,
+                () -> FormulaParser.parse("()")
+        );
+    }
+
+    @Test
+    void binaryOperatorAtBeginningThrowsException() {
+        assertThrows(
+                UnexpectedBinaryOperatorException.class,
+                () -> FormulaParser.parse("+x")
+        );
+    }
+
+    @Test
+    void doubleBinaryOperatorThrowsException() {
+        assertThrows(
+                UnexpectedBinaryOperatorException.class,
+                () -> FormulaParser.parse("x++y")
+        );
+    }
+
+    @Test
+    void missingRightOperandThrowsException() {
+        assertThrows(
+                UnexpectedEndOfInputException.class,
+                () -> FormulaParser.parse("x+")
+        );
+    }
+
+    @Test
+    void operatorBeforeRightParenthesisThrowsException() {
+        assertThrows(
+                UnexpectedTokenException.class,
+                () -> FormulaParser.parse("(x+)")
+        );
+    }
+
+
+    @Test
+    void leftoverTokensAfterExpressionThrowsException() {
+        assertThrows(
+                UnexpectedTokenException.class,
+                () -> FormulaParser.parse("x 1")
+        );
+    }
+
+    @Test
+    void extraTokensAfterValidExpressionThrowsException() {
+        assertThrows(
+                UnexpectedTokenException.class,
+                () -> FormulaParser.parse("x+1 2")
         );
     }
 }

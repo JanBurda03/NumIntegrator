@@ -38,6 +38,9 @@ public abstract class GridSampler extends Sampler
         // MUST BE COMPUTED AFTER variableMaxCounts IS ALLOCATED
         shifts = getShifts();
 
+        variableCounts = new HashMap<>();
+        values = new HashMap<>();
+
         // Initialize counters and values to minimums
         for (String variable : variables)
         {
@@ -78,7 +81,11 @@ public abstract class GridSampler extends Sampler
             {
                 // Increment current variable
                 variableCounts.put(var, count + 1);
-                values.put(var, values.get(var) + shifts.get(var));
+
+                // check that the shift never exceeds the max value (it is common for very small values)
+                double newValue = values.get(var) + shifts.get(var);
+                double maxValue = variablesRanges.get(var).getMax();
+                values.put(var, Math.min(newValue, maxValue));
 
                 currentVariableIndex = 0;
                 return;

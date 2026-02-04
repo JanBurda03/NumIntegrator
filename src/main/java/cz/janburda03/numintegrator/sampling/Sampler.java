@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 /**
  * Abstract base class for all sampling strategies.
  */
-public abstract class Sampler implements Iterator<Map<String, Double>>
+public abstract class Sampler implements Iterator<Map<String, Double>>, Iterable<Map<String, Double>>
 {
     protected final int maxSamples;
     private int sampleIndex = 0;
@@ -37,6 +37,11 @@ public abstract class Sampler implements Iterator<Map<String, Double>>
         this.maxSamples = maxSamples;
         this.variablesRanges = variablesRanges;
         variables = variablesRanges.keySet().toArray(new String[0]);
+    }
+
+    @Override
+    public final Iterator<Map<String, Double>> iterator() {
+        return this;
     }
 
     /**

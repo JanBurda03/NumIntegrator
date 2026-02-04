@@ -2,6 +2,7 @@ package cz.janburda03.numintegrator.parsing.formula.expressions;
 
 import cz.janburda03.numintegrator.parsing.formula.exceptions.MissingRightParenthesisException;
 import cz.janburda03.numintegrator.parsing.formula.exceptions.UnexpectedBinaryOperatorException;
+import cz.janburda03.numintegrator.parsing.formula.exceptions.UnexpectedEndOfInputException;
 import cz.janburda03.numintegrator.parsing.formula.exceptions.UnexpectedTokenException;
 import cz.janburda03.numintegrator.parsing.formula.tokenizing.*;
 
@@ -27,7 +28,13 @@ public class ExpressionParser {
         this.tokens = tokenList.toArray(new Token[0]);
         this.pos = 0;
 
-        return parseExpression(0);
+        Expression expr = parseExpression(0);
+
+        if (pos < tokens.length) {
+            throw new UnexpectedTokenException(tokens[pos]);
+        }
+
+        return expr;
     }
 
     /**
@@ -113,7 +120,7 @@ public class ExpressionParser {
      * Returns the current token and advances the position.
      */
     private Token next() {
-        if (pos >= tokens.length) throw new NoSuchElementException();
+        if (pos >= tokens.length) throw new UnexpectedEndOfInputException();
         return tokens[pos++];
     }
 
@@ -122,6 +129,10 @@ public class ExpressionParser {
      * Throws MissingRightParenthesisException if not.
      */
     private void expectRightParenthesis() {
+        if (pos >= tokens.length) {
+            throw new MissingRightParenthesisException();
+        }
+
         Token t = next();
         if (!(t instanceof RightParenthesisToken)) {
             throw new MissingRightParenthesisException();
