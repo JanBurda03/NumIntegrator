@@ -5,9 +5,8 @@ package cz.janburda03.numintegrator.parsing.input;
  */
 public enum SamplingType {
 
-    // Grid-based sampling (deterministic)
-    UNIFORM,      // same number of samples per variable, structured grid
-    PROPORTIONAL, // samples per variable proportional to its range, structured grid
+
+    GRID,      // Grid-based sampling (deterministic)
 
     // Probabilistic sampling (Monte Carlo style)
     RANDOM,            // standard random sampling

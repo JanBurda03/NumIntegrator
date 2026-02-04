@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 
-public class FormulaParserTest {
+public class FormulaParserTests {
     private static final double EPSILON = 1e-10;
 
     @Test

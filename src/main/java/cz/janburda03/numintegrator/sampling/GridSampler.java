@@ -5,25 +5,27 @@ import cz.janburda03.numintegrator.parsing.input.VariableRange;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.pow;
+
 /**
- * Base class for grid-based sampling strategies.
+ * grid-based sampling
  */
-public abstract class GridSampler extends Sampler
+public class GridSampler extends Sampler
 {
     /** Step size for each variable. */
-    protected final Map<String, Double> shifts;
+    private final Map<String, Double> shifts;
 
     /** Maximum number of steps for each variable. */
-    protected final Map<String, Integer> variableMaxCounts;
-
-    /** Index of the currently updated variable. */
-    protected int currentVariableIndex = 0;
+    private final Map<String, Integer> maxNumberOfShifts;
 
     /** Current step count for each variable. */
-    protected Map<String, Integer> variableCounts;
+    private Map<String, Integer> variableCounts;
+
+    /** Index of the currently updated variable. */
+    private int currentVariableIndex = 0;
 
     /** Current values of all variables. */
-    protected Map<String, Double> values;
+    private Map<String, Double> values;
 
     /**
      * Creates a grid sampler that generates a fixed number of samples.
@@ -34,7 +36,7 @@ public abstract class GridSampler extends Sampler
     public GridSampler(int maxSamples, Map<String, VariableRange> variablesRanges) {
         super(maxSamples, variablesRanges);
 
-        variableMaxCounts = getVariableMaxCounts();
+        maxNumberOfShifts = getMaxNumberOfShifts();
         // MUST BE COMPUTED AFTER variableMaxCounts IS ALLOCATED
         shifts = getShifts();
 
@@ -75,7 +77,7 @@ public abstract class GridSampler extends Sampler
         {
             String var = variables[i];
             int count = variableCounts.get(var);
-            int max = variableMaxCounts.get(var);
+            int max = maxNumberOfShifts.get(var);
 
             if (count < max)
             {
@@ -105,9 +107,52 @@ public abstract class GridSampler extends Sampler
         }
     }
 
-    /** @return step sizes for all variables */
-    protected abstract Map<String, Double> getShifts();
+    private Map<String, Integer> getMaxNumberOfShifts() {
+        Map<String, Integer> result = new HashMap<>();
 
-    /** @return maximum step counts for all variables */
-    protected abstract Map<String, Integer> getVariableMaxCounts();
+        int n = variables.length;
+
+        // base samples per variable
+        int k = (int) Math.floor(pow(maxSamples, 1.0 / n));
+        k = Math.max(k, 1);
+
+        int[] samples = new int[n];
+        for (int i = 0; i < n; i++) {
+            samples[i] = k;
+        }
+
+        // try to increment dimensions while product <= maxSamples
+        int product;
+        for (int i = 0; i < n; i++) {
+            product = (int)(Math.pow(k+1, i) * Math.pow(k,n-i));
+            if (product >= maxSamples) {
+                break;
+            }
+            samples[i]++;
+        }
+
+
+        // convert samples maxCount = samples - 1
+        for (int i = 0; i < n; i++) {
+            result.put(variables[i], samples[i] - 1);
+        }
+
+        return result;
+    }
+
+    private Map<String, Double> getShifts() {
+        Map<String, Double> shifts = new HashMap<>();
+
+        for (String var : variables) {
+            VariableRange range = variablesRanges.get(var);
+            double min = range.getMin();
+            double max = range.getMax();
+            int maxCount = maxNumberOfShifts.get(var);
+
+            double shift = maxCount > 0 ? (max - min) / maxCount : 0.0; // if there is only one state (maxCount) for variable, there is no shift
+            shifts.put(var, shift);
+        }
+
+        return shifts;
+    }
 }
