@@ -5,20 +5,11 @@ package cz.janburda03.numintegrator.parsing.input;
  */
 public enum SamplingType {
 
-    /**
-     * Uses the same number of samples for each variable,
-     * regardless of its range.
-     */
-    UNIFORM,
+    // Grid-based sampling (deterministic)
+    UNIFORM,      // same number of samples per variable, structured grid
+    PROPORTIONAL, // samples per variable proportional to its range, structured grid
 
-    /**
-     * Allocates the number of samples for each variable
-     * proportionally to its numeric range.
-     */
-    RANGE_BASED,
-
-    /**
-     * Uses probabilistic (random) sampling of variables.
-     */
-    PROBABILISTIC
+    // Probabilistic sampling (Monte Carlo style)
+    RANDOM,            // standard random sampling
+    HALTON,            // low-discrepancy Halton sequence
 }
