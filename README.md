@@ -25,12 +25,16 @@ Supports three sampling strategies:
 
 1. **Clone the repository:**
 
+```bash
 git clone https://github.com/JanBurda03/NumIntegrator.git
-cd NumIntegrator
+```
+
 
 2. **Build the project using Maven:**
 
+```bash
 mvn clean package
+```
 
 3. **Run the integrator with four arguments:**
 
@@ -47,38 +51,46 @@ mvn clean package
 java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main x+y 1000 GRID x 0 1 y 0 1
 ```
 
+```bash
 0.9849032258064516
+```
 
 ---
 
 ## Example: More Complex Expression
 
 ```bash
-java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main 
-"sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1" 
-10000 HALTON 
+java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main \
+"sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1" \
+10000 HALTON \
 x1 0 1 x2 -1 1 x3 -10 10
 ```
 
+```bash
 44139.830175395175
+```
 
 ```bash
-java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main
-"sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1"
-10000 RANDOM
+java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main \
+"sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1" \
+10000 RANDOM \
 x1 0 1 x2 -1 1 x3 -10 10
 ```
 
+```bash
 44735.643493311734
+```
 
 ```bash
-java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main
-"sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1"
-1000000 GRID
+java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main \
+"sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1" \
+1000000 GRID \
 x1 0 1 x2 -1 1 x3 -10 10
 ```
 
+```bash
 48266.531694641024
+```
 
 ---
 
