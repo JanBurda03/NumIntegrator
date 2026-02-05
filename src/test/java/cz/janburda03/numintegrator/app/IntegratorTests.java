@@ -10,7 +10,6 @@ public class IntegratorTests
 
     @Test
     void integrateGridUnitSemicircle() {
-        // given
         String[] args = {
                 "sqrt(1 - x^2)",
                 "10000000",
@@ -27,7 +26,6 @@ public class IntegratorTests
 
     @Test
     void integrateGridHalfCuboid() {
-        // given
         String[] args = {
                 "x+y",
                 "10000000",
@@ -45,7 +43,6 @@ public class IntegratorTests
 
     @Test
     void integrateRandomUnitSemicircle() {
-        // given
         String[] args = {
                 "sqrt(1 - x^2)",
                 "10000000",
@@ -62,11 +59,43 @@ public class IntegratorTests
 
     @Test
     void integrateRandomHalfCuboid() {
-        // given
         String[] args = {
                 "x+y",
                 "10000000",
                 "RANDOM",
+                "x", "0", "1",
+                "y", "0", "1"
+        };
+
+        double result = Main.integrate(args);
+
+        double expected = 1;
+
+        assertEquals(expected, result, EPSILON);
+    }
+
+    @Test
+    void integrateHaltonUnitSemicircle() {
+        String[] args = {
+                "sqrt(1 - x^2)",
+                "10000000",
+                "HALTON",
+                "x", "-1", "1"
+        };
+
+        double result = Main.integrate(args);
+
+        double expected = Math.PI / 2.0;
+
+        assertEquals(expected, result, EPSILON);
+    }
+
+    @Test
+    void integrateHaltonHalfCuboid() {
+        String[] args = {
+                "x+y",
+                "10000000",
+                "HALTON",
                 "x", "0", "1",
                 "y", "0", "1"
         };
