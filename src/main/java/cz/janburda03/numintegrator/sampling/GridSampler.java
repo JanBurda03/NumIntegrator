@@ -2,6 +2,7 @@ package cz.janburda03.numintegrator.sampling;
 
 import cz.janburda03.numintegrator.parsing.input.VariableRange;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,13 +21,13 @@ public class GridSampler extends Sampler {
     private final Map<String, Integer> maxNumberOfShifts;
 
     /** Current step count for each variable. */
-    private Map<String, Integer> variableCounts;
+    private final Map<String, Integer> variableCounts;
 
     /** Index of the currently updated variable (for advancing the grid). */
     private int currentVariableIndex = 0;
 
     /** Current values of all variables. */
-    private Map<String, Double> values;
+    private final Map<String, Double> values;
 
     /**
      * Creates a grid sampler that generates a fixed number of samples.
@@ -120,9 +121,7 @@ public class GridSampler extends Sampler {
         k = Math.max(k, 1);
 
         int[] samples = new int[n];
-        for (int i = 0; i < n; i++) {
-            samples[i] = k;
-        }
+        Arrays.fill(samples, k);
 
         // Increment individual dimensions while product <= maxSamples
         int product;

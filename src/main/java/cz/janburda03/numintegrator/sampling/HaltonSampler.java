@@ -82,21 +82,28 @@ public class HaltonSampler extends Sampler {
      */
     private int[] firstNPrimes(int n) {
         int[] primes = new int[n];
-        int count = 0;
-        int candidate = 2;
+        if (n == 0) return primes;
+
+        primes[0] = 2;
+        int count = 1;
+        int candidate = 3;
 
         while (count < n) {
             boolean isPrime = true;
-            for (int i = 2; i * i <= candidate; i++) {
-                if (candidate % i == 0) {
+
+            for (int i = 0; i < count; i++) {
+                int p = primes[i];
+                if (p * p > candidate) break;
+                if (candidate % p == 0) {
                     isPrime = false;
                     break;
                 }
             }
+
             if (isPrime) {
                 primes[count++] = candidate;
             }
-            candidate++;
+            candidate += 2;
         }
 
         return primes;

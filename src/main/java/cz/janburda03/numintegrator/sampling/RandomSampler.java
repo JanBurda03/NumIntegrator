@@ -16,7 +16,7 @@ public class RandomSampler extends Sampler {
      *
      * @param maxSamples      total number of samples to generate
      * @param variablesRanges map of ranges for all variables
-     * @throws IllegalArgumentException if {@code maxSamples <= 0}
+     * @throws IllegalArgumentException if {@code maxSamples <= 0} or {@code variablesRanges} is empty
      */
     public RandomSampler(int maxSamples, Map<String, VariableRange> variablesRanges) {
         super(maxSamples, variablesRanges);

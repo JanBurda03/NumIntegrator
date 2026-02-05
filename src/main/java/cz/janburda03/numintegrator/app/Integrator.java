@@ -24,7 +24,6 @@ import java.util.Map;
  */
 public class Integrator {
 
-    /** Private constructor to prevent instantiation. */
     private Integrator() {}
 
     /**

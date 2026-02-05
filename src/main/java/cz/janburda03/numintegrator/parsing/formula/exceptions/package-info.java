@@ -14,6 +14,8 @@
  *         - Thrown when a left parenthesis is not closed with a matching right parenthesis.</li>
  *     <li>{@link cz.janburda03.numintegrator.parsing.formula.exceptions.UnknownVariableException}
  *         - Thrown when evaluating an expression containing a variable that is not provided in the variable map.</li>
+ *     <li>{@link cz.janburda03.numintegrator.parsing.formula.exceptions.UnexpectedEndOfInputException}
+ *         - Thrown when there is a missing operand at the end of formula.</li>
  * </ul>
  *
  * <p>

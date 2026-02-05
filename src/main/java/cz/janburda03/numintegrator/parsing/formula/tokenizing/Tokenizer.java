@@ -135,7 +135,6 @@ public class Tokenizer {
             case "exp" -> new OperationToken(Operation.EXP);
             case "abs" -> new OperationToken(Operation.ABS);
             case "sqrt"-> new OperationToken(Operation.SQRT);
-            case "pow" -> new OperationToken(Operation.POWER);
             default -> null; // it is not a function
         };
     }

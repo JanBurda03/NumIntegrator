@@ -7,7 +7,6 @@ import cz.janburda03.numintegrator.parsing.formula.exceptions.UnexpectedTokenExc
 import cz.janburda03.numintegrator.parsing.formula.tokenizing.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Parses a list of tokens into an abstract syntax tree of Expression objects.

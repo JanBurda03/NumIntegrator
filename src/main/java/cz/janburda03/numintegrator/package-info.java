@@ -5,7 +5,7 @@
  * multidimensional definite integrals based on user input and
  * different sampling strategies.</p>
  *
- * <p>It consists of three main layers/packages:</p>
+ * <p>It consists of three main packages:</p>
  *
  * <ul>
  *     <li>{@link cz.janburda03.numintegrator.parsing}
