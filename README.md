@@ -43,7 +43,9 @@ mvn clean package
 
 **Example:**
 
+```bash
 java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main x+y 1000 GRID x 0 1 y 0 1
+```
 
 0.9849032258064516
 
@@ -51,24 +53,30 @@ java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main x+y 1000 
 
 ## Example: More Complex Expression
 
+```bash
 java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main 
 "sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1" 
 10000 HALTON 
 x1 0 1 x2 -1 1 x3 -10 10
+```
 
 44139.830175395175
 
+```bash
 java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main
 "sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1"
 10000 RANDOM
 x1 0 1 x2 -1 1 x3 -10 10
+```
 
 44735.643493311734
 
+```bash
 java -cp target/NumIntegrator.jar cz.janburda03.numintegrator.app.Main
 "sqrt(abs(x1)) + sin(x2+pi) - cos(x3-pi) * tan(x1) / (cot(x2) + ln(pi) + log(2*e)) + exp(x3) + pi^x1"
 1000000 GRID
 x1 0 1 x2 -1 1 x3 -10 10
+```
 
 48266.531694641024
 
